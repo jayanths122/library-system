@@ -70,7 +70,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.listen(process.env.EXPRESS_PORT, () => {
+app.listen(process.env.PORT || 5000, () => {
     console.log('Library server listening on PORT ' + process.env.EXPRESS_PORT);
 });
 
