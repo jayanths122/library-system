@@ -1,0 +1,115 @@
+<%- include('../partials/header'); -%>
+
+<style>
+    #img-profile {
+        width: 55%;
+        height: 55%;
+    }
+</style>
+
+
+<hr>
+<div class="container bootstrap snippet">
+    <div class="row">
+  		<div class="col-sm-10"><h1>Welcome <%=userInfo.firstName%></h1></div>
+        <div class="col-sm-2" id="profile_image"><a href="" class="pull-right">
+            <img id="img-profile"" title="profile image" class="img-circle img-responsive" src="/assets/<%=userInfo.image%>"></a></div>
+    </div>
+    <div class="row">
+  		<div class="col-sm-3"><!--left col-->
+              
+
+      <div class="text-center">
+        <img src="/assets/library.png" class="avatar img-circle img-thumbnail" alt="avatar">
+      </div></hr><br>
+
+               
+          <div class="panel panel-default">
+            <div class="panel-heading">Website <i class="fa fa-link fa-1x"></i></div>
+            <div class="panel-body"><a href="">Library System</a></div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-xs-12">
+                 <br>
+                    <button onclick="location.href='/logout'" class="btn btn-lg btn-secondary" type="logout"><i class="glyphicon glyphicon-log-out"></i>  Logout</button>
+             </div>
+       </div>
+          
+            
+        </div><!--/col-3-->
+    	<div class="col-sm-9">
+            <ul class="nav nav-tabs">
+                <li class="<%= (page == 'home') ? 'active' : '' %>"><a id="home_page" data-toggle="tab" data-tag="home" href="#home">Home</a></li>
+                <li class="<%= (page == 'manage') ? 'active' : '' %>"><a id="manage_page" data-toggle="tab" data-tag="manage" href="#manage">Manage Books</a></li>
+                <li class="<%= (page == 'requests') ? 'active' : '' %>"><a id="requests_page" data-toggle="tab" data-tag="requests" href="#requests">Issue requests</a></li>
+              </ul>
+            
+          <div class="tab-content">
+            <div class="tab-pane active" id="home">
+                <hr>
+                  <form class="form" action="##" method="post" id="registrationForm">
+                      <div class="form-group">
+                          
+                          <div class="col-xs-6">
+                              <label for="first_name"><h4>First name</h4></label>
+                              <input type="text" class="form-control" name="first_name" id="first_name" placeholder="first name" value="<%=userInfo.firstName%>" readonly>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          
+                          <div class="col-xs-6">
+                            <label for="last_name"><h4>Last name</h4></label>
+                              <input type="text" class="form-control" name="last_name" id="last_name" placeholder="last name" value="<%=userInfo.lastName%>" readonly>
+                          </div>
+                      </div>
+          
+                      <div class="form-group">
+                          
+                          <div class="col-xs-6">
+                              <label for="phone"><h4>Phone</h4></label>
+                              <input type="text" class="form-control" name="phone" id="phone" placeholder="enter phone" value="<%=userInfo.phone%>" readonly>
+                          </div>
+                      </div>
+          
+                      <div class="form-group">
+                          <div class="col-xs-6">
+                             <label for="gender"><h4>Gender</h4></label>
+                              <input type="text" class="form-control" name="gender" id="gender" placeholder="enter gender number" value="<%=userInfo.gender%>" readonly>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          
+                          <div class="col-xs-6">
+                              <label for="email"><h4>Email</h4></label>
+                              <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com" value="<%=userInfo.email%>" readonly>
+                          </div>
+                      </div>
+
+              	</form>
+              
+              <hr>
+              
+            </div><!--/tab-pane-->
+
+            <div class="tab-pane" id="manage">
+                <%- include('crud') -%>
+                <hr>
+             </div><!--/tab-pane-->
+
+             <div class="tab-pane" id="requests">
+                  <%- include('requests') -%>
+                  <hr>
+              </div><!--/tab-pane-->
+
+          </div><!--/tab-content-->
+
+        </div><!--/col-9-->
+    </div>
+
+<script>
+    var elementId = '<%=page%>' + '_page';
+    document.getElementById(elementId).click();
+</script>
+
+<%- include('../partials/footer') -%>

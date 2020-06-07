@@ -1,0 +1,222 @@
+<%- include('../partials/header'); -%>
+
+<style>
+    #img-profile {
+        width: 55%;
+        height: 55%;
+    }
+</style>
+
+<hr>
+<div class="container bootstrap snippet">
+    <div class="row">
+  		<div class="col-sm-10"><h1>Welcome <%=userInfo.firstName%></h1></div>
+        <div class="col-sm-2" id="profile_image"><a href="" class="pull-right">
+            <img id="img-profile"" title="profile image" class="img-circle img-responsive" src="/assets/<%=userInfo.image%>"></a></div>
+    </div>
+    <div class="row">
+  		<div class="col-sm-3"><!--left col-->
+              
+
+      <div class="text-center">
+        <img src="/assets/library.png" class="avatar img-circle img-thumbnail" alt="avatar">
+      </div></hr><br>
+
+               
+          <div class="panel panel-default">
+            <div class="panel-heading">Website <i class="fa fa-link fa-1x"></i></div>
+            <div class="panel-body"><a href="">Library System</a></div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-xs-12">
+                 <br>
+                    <button onclick="location.href='/logout'" class="btn btn-lg btn-secondary" type="logout"><i class="glyphicon glyphicon-log-out"></i>  Logout</button>
+             </div>
+       </div>
+          
+            
+        </div><!--/col-3-->
+    	<div class="col-sm-9">
+            <ul class="nav nav-tabs">
+                <li class="<%= (page == 'home') ? 'active' : '' %>"><a id="home_page" data-toggle="tab" href="#home">Home</a></li>
+                <li class="<%= (page == 'browse') ? 'active' : '' %>"><a id="browse_page" data-toggle="tab" href="#browse">Browse Books</a></li>
+                <li class="<%= (page == 'activities') ? 'active' : '' %>"><a id="activities_page" data-toggle="tab" href="#activity">Activities</a></li>
+              </ul>
+
+        <%  
+            const requestObj = {};
+            const issueObj = {};
+        
+            if (requests.length) {
+                requests.forEach(function(curr) { 
+                    requestObj[curr._id] = curr._id;
+                });
+            }
+
+            if (issues.length) {
+                issues.forEach(function(curr) { 
+                    issueObj[curr._id] = curr._id;
+                });
+            }
+        %>
+              
+          <div class="tab-content">
+            <div class="tab-pane active" id="home">
+                <hr>
+                  <form class="form" action="/user/updateProfile" method="post" id="registrationForm">
+                      <div class="form-group">
+                          
+                          <div class="col-xs-6">
+                              <label for="first_name"><h4>First name</h4></label>
+                              <input type="text" class="form-control" name="first_name" id="firstName" placeholder="first name" value="<%=userInfo.firstName%>">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          
+                          <div class="col-xs-6">
+                            <label for="last_name"><h4>Last name</h4></label>
+                              <input type="text" class="form-control" name="last_name" id="LastName" placeholder="last name" value="<%=userInfo.lastName%>">
+                          </div>
+                      </div>
+          
+                      <div class="form-group">
+                          
+                          <div class="col-xs-6">
+                              <label for="phone"><h4>Phone</h4></label>
+                              <input type="text" class="form-control" name="phone" id="phone" placeholder="enter phone" value="<%=userInfo.phone%>">
+                          </div>
+                      </div>
+          
+                      <div class="form-group">
+                          <div class="col-xs-6">
+                             <label for="gender"><h4>Gender</h4></label>
+                              <input type="text" class="form-control" name="gender" id="gender" placeholder="enter gender number" value="<%=userInfo.gender%>">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          
+                          <div class="col-xs-6">
+                              <label for="email"><h4>Email</h4></label>
+                              <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com" value="<%=userInfo.email%>">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          
+                          <div class="col-xs-6">
+                              <label for="address"><h4>Address</h4></label>
+                              <input type="address" class="form-control" name="address" id="address" placeholder="somewhere" value="<%=userInfo.address%>">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="col-xs-12">
+                            <br>
+                               <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Update</button>
+                         </div>
+                   </div>
+              	</form>
+              
+              <hr>
+              
+            </div><!--/tab-pane-->
+
+            <div class="tab-pane" id="browse">
+                <h2></h2>
+                <div class="row">
+                    <% books.forEach(function (book) { %>
+                        <div class="card col-md-3 text-center">
+                            <div class="card-header">
+                            <%= book.title%>
+                            </div>
+                            <div class="card-body">
+                            <h5 class="card-title" style="height:20%">Author: <%= book.author%></h5>
+                            <p class="card-text" style="height:40%">Desc: <%= book.description%></p>
+                            <% 
+                                const b_id = book._id;
+                                if (!(requestObj[b_id]) && !(issueObj[b_id]) && book.issuable) { 
+                            %>
+                                <a href="/user/requestIssue?book_id=<%=book._id%>" class="btn btn-xs btn-primary">Issue</a>
+                                <a href="/book/details?book_id=<%=book._id%>" class="btn btn-xs btn-primary">Details</a>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    Stock: <%= book.stock%>
+                                </div>        
+                            <% } else if (requestObj[b_id] && book.issuable) { %>
+                                <a href="/book/details?book_id=<%=book._id%>" class="btn btn-xs btn-primary">Details</a>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    Stock: <%= book.stock%> (Requested for issue)
+                                </div>
+                            <%} else if (issueObj[b_id] && book.issuable) { %>
+                                <a href="/user/returnBook?book_id=<%=book._id%>&user_id=<%=userInfo._id%>" class="btn btn-xs btn-primary">Return</a>
+                                <a href="/book/details?book_id=<%=book._id%>" class="btn btn-xs btn-primary">Details</a>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    Stock: <%= book.stock%> (Book has been issued)
+                                </div>
+                            <% } else {
+                                var footNote = ''; 
+                                if (!book.issuable) {
+                                    footNote = '(Unavailable)';
+                                }
+                            %>
+                                <a href="/book/details?book_id=<%=book._id%>" class="btn btn-xs btn-primary">Details</a>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    Stock: <%= book.stock%> <%= footNote %>
+                                </div>
+                            <% } %>
+                        </div>
+                    <% }) %>
+                </div>
+                <hr>
+             </div><!--/tab-pane-->
+
+             <div class="tab-pane" id="activity">
+                  <hr>
+                  <h3>Your previous activities:</h3>
+                  <button type="button" class="btn btn-danger"><a style="color: white;" href="/user/deleteActivities">Delete all activities</a></button>
+                  <table class="table overflow-auto">
+                    <thead>
+                      <tr>
+                        <th scope="col">Sl No</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Info</th>
+                        <th scope="col">Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <% activities.forEach(function (curr, index) { 
+                            var category = curr.category;
+                            var action = ''; var date = ''; 
+                            if (category && category.toLowerCase() == 'request') {
+                                action = 'Issue request made to admin';
+                                date = curr.request_time.requestDate;
+                            }
+                            if (category && category.toLowerCase() == 'issue') {
+                                action = 'Issue request approved';
+                                date = curr.issue_time.issueDate;
+                            }
+                        %>
+                            <tr>
+                                <th scope="row"><%= index+1 %></th>
+                                <td><%= curr.info.title %></td>
+                                <td><%=action%></td>
+                                <td><%=date%></td>
+                            </tr>
+                        <%});%>
+                    </tbody>
+                  </table>
+              </div><!--/tab-pane-->
+
+          </div><!--/tab-content-->
+
+        </div><!--/col-9-->
+    </div>
+
+<script>
+    var elementId = '<%=page%>' + '_page';
+    document.getElementById(elementId).click();
+</script>
+
+<%- include('../partials/footer') -%>
