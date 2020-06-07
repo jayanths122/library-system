@@ -31,7 +31,11 @@ class AdminController {
 
         try {
             const user = await User.findById({ _id: user_id });
-            const book = await Book.findById({ _id: book_id });   
+            const book = await Book.findById({ _id: book_id });  
+            
+            if (book.stock < 1) {
+                return res.redirect('/admin/profile?page=requests');
+            }
             
             await Request.findOneAndDelete({ 'user_id.id': user._id, 'book_info.id': book._id });
             let bookIndex = -1;

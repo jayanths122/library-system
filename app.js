@@ -71,7 +71,7 @@ app.use(function(err, req, res, next) {
 });
 
 app.listen(process.env.PORT || 5000, () => {
-    console.log('Library server listening on PORT ' + process.env.EXPRESS_PORT);
+    console.log(`Library server listening on PORT ${process.env.PORT || 5000}`);
 });
 
 module.exports = app;

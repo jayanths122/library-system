@@ -26,14 +26,6 @@ class userController {
         return startDate < currentDate && endDate > currentDate;
     }
 
-    hasMembershipExpired(membershipDate) {
-        const date = new Date(membershipDate);
-        date.setDate(date.getDate() + 15);
-        const today = new Date();
-
-        return (date.getTime() > today.getTime());
-    }
-
     async userProfile(req, res) {
         try {
             const books = await Book.paginate({}, { page: 1, limit: 5 });
@@ -89,18 +81,26 @@ class userController {
     }
 
     async requestIssue(req, res, next) {
+        
         const { book_id } = req.query;
         try {            
             const book = await Book.findById({ _id: book_id });
             const user = await User.findById({ _id: req.user._id });
 
-            if (this.hasMembershipExpired(book.started)) {
+            const date = new Date(user.started);
+            date.setDate(date.getDate() + 15);
+            const today = new Date();
+
+            console.log(date.getTime(), '>', today.getTime());
+            console.log(date.getTime() > today.getTime());
+            
+            if (today.getTime() > date.getTime()) {
                 return res.redirect('/user/profile?page=browse');
             }
 
-            if (!this.validTime()) {
-                return res.redirect('/user/profile?page=browse');
-            }
+            // if (!this.self.validTime()) {
+            //     return res.redirect('/user/profile?page=browse');
+            // }
 
             if (book && user) {
                 const { _id, title, author, bookId, stock } = book; 
