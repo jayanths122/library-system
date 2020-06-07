@@ -1,5 +1,5 @@
 # Library System :books:
-###### NodeJs application to manage a library system 
+### NodeJs application to manage a library system. See the [working application](https://node-library-service.herokuapp.com/)
 
 ## Application functionality :sparkles:
 1. Admin Role :computer:
@@ -36,6 +36,16 @@ npm install --save body-parser connect-flash cookie-parser dotenv ejs express ex
 ```
 npm start
 ```
+
+## Sample credentials to test out the application
+1. Admin
+**username**: **_admin_**
+**password**: **_123_**  
+
+2. User
+**username**: **_user_**
+**password**: **_123_**  
+
 
 ## Technologies used :package: 
 ## Front-end 
