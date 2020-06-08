@@ -29,7 +29,7 @@
 
 ## Instructions to install the dependencies :package:
 ```
-npm install --save body-parser connect-flash cookie-parser dotenv ejs express express-sanitizer express-session mongoose mongoose-paginate passport passport-local passport-local-mongoose uuid
+npm install --save body-parser connect-flash cookie-parser dotenv ejs express express-sanitizer express-session mongoose mongoose-paginate passport passport-local passport-local-mongoose uuid moment moment-timezone
 ```
 
 ## Instructions to run the application :sparkles:
