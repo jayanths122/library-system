@@ -116,7 +116,7 @@ class userController {
             
             // Check if the user's membership has exceeded
             if (today.getTime() > date.getTime()) {
-                return res.redirect('/user/profile?page=browse&errMsg=Sorry, your membership has expired');
+                return res.redirect('/user/profile?page=browse&errMsg=Sorry, your membership has expired.');
             }
 
             date = new Date(user.started);
@@ -124,12 +124,12 @@ class userController {
 
             // Check if the user's membership is about to expire in 5 days
             if (today.getTime() > date.getTime()) {
-                return res.redirect('/user/profile?page=browse&errMsg=Sorry, your membership is about to expire in 5 days');
+                return res.redirect('/user/profile?page=browse&errMsg=Sorry, your membership is about to expire in 5 days.');
             }
 
             // Only allow requests between 9 and 5 PM
             if (!validTime()) {
-                return res.redirect('/user/profile?page=browse&errMsg=Requests can only be made between 9 AM and 5 PM');
+                return res.redirect('/user/profile?page=browse&errMsg=Requests can only be made between 9 AM and 5 PM.');
             }
 
             if (book && user) {
@@ -199,7 +199,7 @@ class userController {
 
             // Only allow return requests only between 9 and 5 PM
             if (!validTime()) {
-                return res.redirect('/user/profile?page=browse&errMsg="Requests can only be made between 9 AM and 5 PM"');
+                return res.redirect('/user/profile?page=browse&errMsg=Requests can only be made between 9 AM and 5 PM');
             }
 
             const user = await User.findById({ _id: user_id });
