@@ -19,6 +19,8 @@
     "express": "^4.17.1",
     "express-sanitizer": "^1.0.5",
     "express-session": "^1.17.1",
+    "moment": "^2.26.0",
+    "moment-timezone": "^0.5.31",
     "mongoose": "^5.9.18",
     "mongoose-paginate": "^5.0.3",
     "passport": "^0.4.1",
