@@ -57,6 +57,12 @@
 }
 </style>
 
+<% if (errorMsg) { %>
+  <div style="margin: 15px" class="alert alert-danger" role="alert">
+      <%= errorMsg %>
+  </div> 
+<% } %>
+
 <form action="/register" method="POST">
     <div class="container">
       <h1>Register</h1>
@@ -89,5 +95,13 @@
       <p>Already have an account? <a href="/userLogin">Sign in</a>.</p>
     </div>
   </form>
+
+  <script>
+    if ('<%=errorMsg%>') {
+        setTimeout(() => {
+            $('.alert-danger').hide();
+        }, 3500);
+    }
+  </script>
 
 <%- include('../partials/footer'); -%>

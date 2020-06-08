@@ -14,6 +14,18 @@
         <div class="col-sm-2" id="profile_image"><a href="" class="pull-right">
             <img id="img-profile"" title="profile image" class="img-circle img-responsive" src="/assets/<%=userInfo.image%>"></a></div>
     </div>
+    
+    <% if (error.message) { %>
+        <div style="margin: 15px" class="alert alert-danger" role="alert">
+            <%= error.message %>
+        </div> 
+    <% } %>
+    <% if (success.message) { %>
+        <div style="margin: 15px" class="alert alert-success" role="alert">
+            <%= success.message %>
+        </div> 
+    <% } %> 
+    
     <div class="row">
   		<div class="col-sm-3"><!--left col-->
               
@@ -24,8 +36,8 @@
 
                
           <div class="panel panel-default">
-            <div class="panel-heading">Website <i class="fa fa-link fa-1x"></i></div>
-            <div class="panel-body"><a href="">Library System</a></div>
+            <div class="panel-heading">Github <i class="fa fa-link fa-1x"></i></div>
+            <div class="panel-body"><a target="_blank" href="https://github.com/jayanths122/library-system">Library System</a></div>
           </div>
 
           <div class="form-group">
@@ -217,6 +229,20 @@
 <script>
     var elementId = '<%=page%>' + '_page';
     document.getElementById(elementId).click();
+
+    console.log('Error message = ', '<%=error.message%>');
+
+    if ('<%=error.message%>') {
+        setTimeout(() => {
+            $('.alert-danger').hide();
+        }, 3500);
+    }
+
+    if ('<%=success.message%>') {
+        setTimeout(() => {
+            $('.alert-success').hide();
+        }, 3500);
+    }
 </script>
 
 <%- include('../partials/footer') -%>

@@ -10,6 +10,12 @@
         font-size: 20px;
         font-style: italic;
     }
+
+    a {
+        text-align: center;
+        margin-left: 450px;
+        margin-top: 50px;
+    }
 </style>
 
 <div class="container">
@@ -22,6 +28,7 @@
     <h3>Description: </h3>
         <p><%=details.description%></p>
     </div>
+    <a href="/user/profile?page=browse" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Go back</a>
 </div>
 
 <%- include('../partials/footer') -%>

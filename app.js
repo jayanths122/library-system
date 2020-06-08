@@ -8,6 +8,7 @@ const express = require('express'),
       passport = require('passport'),
       LocalStrategy = require('passport-local').Strategy;
 
+// Set up mongoose and connect to Mongo  
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
@@ -16,6 +17,7 @@ mongoose.connect(process.env.MONGO_URL, {
 })
   .catch((err) => console.error(err));
 
+// Set up routes to handles requests 
 const indexRouter = require('./routes/index'),
       userRouter = require('./routes/userRoutes'),
       bookRouter = require('./routes/bookRoutes'),
@@ -23,12 +25,11 @@ const indexRouter = require('./routes/index'),
 
 const app = express();
 
-// view engine setup
+// Define EJS as the view engine 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+// Body parse to parse request body
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -37,10 +38,13 @@ app.use(require('express-session')({
     resave: false,
     saveUninitialized: false
 }));
+
+// Initialize pass and path to static files for the server to access
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Hook up the router middleware 
 app.use('/', indexRouter);
 app.use('/user', userRouter);
 app.use('/book', bookRouter);

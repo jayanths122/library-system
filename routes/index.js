@@ -5,22 +5,22 @@ const express = require('express'),
 // restrict index for logged in user only
 router.get('/', home);
 
-// route to register page
+// Route to load register page
 router.get('/register', register);
 
-// route for register action
+// Route for register action
 router.post('/register', doRegister);
 
-// route to login page
+// Route to load user login page
 router.get('/userLogin', login);
 
-// route to login page
+// Route to load admin login page 
 router.get('/adminLogin', adminLogin);
 
-// route for login action
+// Route for user login action
 router.post('/login', doLogin);
 
-// router to admin login action
+// router for admin login action
 router.post('/doLoginAdmin', doLoginAdmin);
 
 // route for logout action

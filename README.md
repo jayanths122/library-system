@@ -39,12 +39,12 @@ npm start
 
 ## Sample credentials to test out the application
 1. Admin
-**username**: **_admin_**
-**password**: **_123_**  
+   - **username**: **_admin_**
+   - **password**: **_123_**  
 
 2. User
-**username**: **_user_**
-**password**: **_123_**  
+   - **username**: **_user_**
+   - **password**: **_123_**  
 
 
 ## Technologies used :package: 

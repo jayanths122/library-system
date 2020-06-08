@@ -1,47 +1,52 @@
 <%- include('partials/header'); -%>
 <style>
-  .card {
-    margin-top: 30px;
-    margin-bottom: 55px;
-  }
+    .card-img-top {
+        height: 50%;
+    }
+
+    .card-body {
+        text-align: center;
+    }
+
+    .card-title {
+        font-family: monospace;
+        margin-bottom: 25px;
+        margin-top: 30px;
+    }
+
 </style>
 
-<div class="container">
-  <div class="card user_card">
-    <div class="card-header">
-      Login
+<div class="card-deck" style="padding-top: 50px; padding-bottom: 50px; padding-left: 80px; padding-right: 50px;">
+    <div class="card">
+      <img class="card-img-top" src="/assets/user_silhouette.png" alt="Card image cap">
+      <div class="card-body">
+        <h1 class="card-title">USER LOGIN</h1>
+        <a href="/userLogin" class="btn btn-primary">Sign-In as User</a>
+      </div>
+      <div class="card-footer">
+        <small class="text-muted">Library System</small>
+      </div>
     </div>
-    <div class="card-body">
-      <h5 class="card-title">User Login</h5>
-      <!-- <p class="card-text">Login .</p> -->
-      <a href="/userLogin" class="btn btn-primary">Sign-In as User</a>
+    <div class="card">
+      <img class="card-img-top" src="/assets/admin_silhouette.jpg" alt="Card image cap">
+      <div class="card-body">
+        <h1 class="card-title">ADMIN LOGIN</h1>
+        <a href="/adminLogin" class="btn btn-primary">Sign-In as Admin</a>
+      </div>
+      <div class="card-footer">
+        <small class="text-muted">Library System</small>
+      </div>
     </div>
-  </div>
-
-
-  <div class="card admin_card">
-    <div class="card-header">
-      Login
-    </div>
-    <div class="card-body">
-      <h5 class="card-title">Admin Login</h5>
-      <!-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> -->
-      <a href="/adminLogin" class="btn btn-primary">Sign-In as Admin</a>
-    </div>
-  </div>
-
-  <div class="card sign_up_card">
-    <div class="card-header">
-      Sign-up
-    </div>
-    <div class="card-body">
-      <h5 class="card-title">Sign-up</h5>
-      <!-- <p class="card-text">With supporting text below as a natural lead-in to additional content.</p> -->
-      <a href="/register" class="btn btn-primary">Register</a>
+    <div class="card">
+      <img class="card-img-top" src="/assets/registration.png" alt="Card image cap">
+      <div class="card-body">
+        <h1 class="card-title">REGISTRATION</h1>
+        <a href="/register" class="btn btn-primary">Register</a>
+      </div>
+      <div class="card-footer">
+        <small class="text-muted">Library System</small>
+      </div>
     </div>
   </div>
-
-</div>
-
 
 <%- include('partials/footer'); -%>

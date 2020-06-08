@@ -2,32 +2,22 @@ const User = require('../models/User'),
       Book = require('../models/Book'),
       Request = require('../models/Request'),
       Issue = require('../models/Issue'),
-      Activity = require('../models/Activity');
+      Activity = require('../models/Activity'),
+      { validTime } = require('../utilities/validTime');
 
 class userController {
     constructor() {}
 
-    validTime() {
-        var startTime = '10:00:00';
-        var endTime = '17:00:00';
-        
-        currentDate = new Date()   
-        
-        startDate = new Date(currentDate.getTime());
-        startDate.setHours(startTime.split(":")[0]);
-        startDate.setMinutes(startTime.split(":")[1]);
-        startDate.setSeconds(startTime.split(":")[2]);
-        
-        endDate = new Date(currentDate.getTime());
-        endDate.setHours(endTime.split(":")[0]);
-        endDate.setMinutes(endTime.split(":")[1]);
-        endDate.setSeconds(endTime.split(":")[2]);
-        
-        return startDate < currentDate && endDate > currentDate;
-    }
-
+    /**
+     * Renders the user profile.
+     *
+     * @param {number} req Request object.
+     * @param {number} res Response object.
+     * @return {void} 
+    */
     async userProfile(req, res) {
         try {
+            // Fetch user info, requests and issues he's made and all activities 
             const books = await Book.paginate({}, { page: 1, limit: 5 });
             const user = await User.findById({ _id: req.user._id });
             const requests = user.requestDetails;
@@ -40,7 +30,13 @@ class userController {
                 requests: requests.length ? requests : [],
                 issues: issues.length ? issues : [],
                 activities: activities.length ? activities : [],
-                page: req.query.page
+                page: req.query.page,
+                error: {
+                    message: req.query.errMsg || ''
+                },
+                success: {
+                    message: req.query.scsMsg || ''
+                }
             });
 
         } catch (error) {
@@ -49,8 +45,17 @@ class userController {
         }
     }
 
+
+    /**
+     * Updates the user profile.
+     *
+     * @param {number} req Request object.
+     * @param {number} res Response object.
+     * @return {void} 
+    */
     async updateProfile(req, res, next) {
         try {
+            // Find the user and update profile
             let user = await User.findById({ _id: req.user._id });
             const { first_name, last_name, phone, gender, email, address } = req.body;
 
@@ -63,23 +68,40 @@ class userController {
 
             await user.save();
             
-            res.redirect('/user/profile?page=home');
+            res.redirect('/user/profile?page=home&scsMsg=Profile updated');
         } catch (error) {
             console.log(error);
             res.redirect('back');
         }
     }
 
+
+    /**
+     * Deletes all the activities for a user.
+     *
+     * @param {number} req Request object.
+     * @param {number} res Response object.
+     * @return {void} 
+    */
     async deleteActivities(req, res, next) {
         try {
+            // Find all the activities for the user and delete all
             await Activity.deleteMany({ 'user_id.id': req.user._id });
-            res.redirect('/user/profile?page=activities');
+            res.redirect('/user/profile?page=activities&scsMsg=All activities deleted!');
         } catch (error) {
             console.log(error);
             res.redirect('back');
         }
     }
 
+
+    /**
+     * Makes request to issue a book.
+     *
+     * @param {number} req Request object.
+     * @param {number} res Response object.
+     * @return {void} 
+    */
     async requestIssue(req, res, next) {
         
         const { book_id } = req.query;
@@ -87,23 +109,32 @@ class userController {
             const book = await Book.findById({ _id: book_id });
             const user = await User.findById({ _id: req.user._id });
 
-            const date = new Date(user.started);
+            // Get the user's start date
+            let date = new Date(user.started);
             date.setDate(date.getDate() + 15);
             const today = new Date();
-
-            console.log(date.getTime(), '>', today.getTime());
-            console.log(date.getTime() > today.getTime());
             
+            // Check if the user's membership has exceeded
             if (today.getTime() > date.getTime()) {
-                return res.redirect('/user/profile?page=browse');
+                return res.redirect('/user/profile?page=browse&errMsg=Sorry, your membership has expired');
             }
 
-            // if (!this.self.validTime()) {
-            //     return res.redirect('/user/profile?page=browse');
-            // }
+            date = new Date(user.started);
+            date.setDate(date.getDate() + 10);
+
+            // Check if the user's membership is about to expire in 5 days
+            if (today.getTime() > date.getTime()) {
+                return res.redirect('/user/profile?page=browse&errMsg=Sorry, your membership is about to expire in 5 days');
+            }
+
+            // Only allow requests between 9 and 5 PM
+            if (!validTime()) {
+                return res.redirect('/user/profile?page=browse&errMsg=Requests can only be made between 9 AM and 5 PM');
+            }
 
             if (book && user) {
                 const { _id, title, author, bookId, stock } = book; 
+                // Create a request for issue od book
                 const request = new Request({
                     book_info : {
                         id : _id,
@@ -122,6 +153,7 @@ class userController {
 
                 user.requestDetails.push(book._id);
 
+                // Log the activity
                 const activity = new Activity({
                     info: {
                         id: book._id,
@@ -144,7 +176,7 @@ class userController {
                     activity.save()
                 ]);
 
-                return res.redirect('/user/profile?page=browse');
+                return res.redirect('/user/profile?page=browse&scsMsg=Issue request made successfully');
             }
             res.redirect('back');
         } catch (err) {
@@ -153,17 +185,27 @@ class userController {
         }
     }
 
+
+    /**
+     * Makes request to return a book.
+     *
+     * @param {number} req Request object.
+     * @param {number} res Response object.
+     * @return {void} 
+    */
     async returnBook(req, res, next) {
         const { user_id, book_id } = req.query;
         try {
 
-            if (!this.validTime()) {
-                return res.redirect('/user/profile?page=browse');
+            // Only allow return requests only between 9 and 5 PM
+            if (!validTime()) {
+                return res.redirect('/user/profile?page=browse&errMsg="Requests can only be made between 9 AM and 5 PM"');
             }
 
             const user = await User.findById({ _id: user_id });
             const book = await Book.findById({ _id: book_id });   
         
+            // Once book is returned, delete the issue and update the stock
             await Issue.findOneAndDelete({ 'user_id.id': user._id, 'book_info.id': book._id });
             let bookIndex = -1;
             user.issueDetails.forEach((element, index) => {
@@ -179,7 +221,7 @@ class userController {
                 book.save()
             ]); 
 
-            return res.redirect('/user/profile?page=browse');
+            return res.redirect('/user/profile?page=browse&scsMsg=Book has been successfully returned');
 
         } catch (error) {
             console.log(error);
