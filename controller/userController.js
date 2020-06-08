@@ -197,8 +197,6 @@ class userController {
         const { user_id, book_id } = req.query;
         try {
 
-            console.log('Is time valid? ', validTime());
-
             // Only allow return requests only between 9 and 5 PM
             if (!validTime()) {
                 return res.redirect('/user/profile?page=browse&errMsg=Requests can only be made between 9 AM and 5 PM');

@@ -6,6 +6,9 @@
  * @return {Boolean} true || false 
 */
 module.exports.validTime = function () {
+
+    console.log('Is valid time called ', validTime());
+
     var startTime = '10:00:00';
     var endTime = '17:00:00';
     
