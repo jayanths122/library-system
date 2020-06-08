@@ -7,8 +7,6 @@
 */
 module.exports.validTime = function () {
 
-    console.log('Is valid time called ', validTime());
-
     var startTime = '10:00:00';
     var endTime = '17:00:00';
     
@@ -24,5 +22,9 @@ module.exports.validTime = function () {
     endDate.setMinutes(endTime.split(":")[1]);
     endDate.setSeconds(endTime.split(":")[2]);
     
+    console.log('Is valid time ?', startDate < currentDate && endDate > currentDate);
+    console.log('Start date = ', startDate, '; Current = ', currentDate, '; End date = ', endTime);
+    
+
     return (startDate < currentDate && endDate > currentDate);
 }
