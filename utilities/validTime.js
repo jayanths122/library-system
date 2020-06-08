@@ -5,7 +5,7 @@
  * @param {number} res Response object.
  * @return {Boolean} true || false 
 */
-const moment = require('moment-timezone');
+const moment = require('moment');
 
 module.exports.validTime = function () {
  
@@ -32,9 +32,11 @@ module.exports.validTime = function () {
     // return (startDate < currentDate && endDate > currentDate);
 
     const format = 'hh:mm:ss'
+    const date = moment.utc().format();
 
-    const time = moment(moment(), 'Asia/Kolkata'),
-    beforeTime = moment('09:00:00', format),
+    const time = moment.utc(date).local().format();
+
+    const beforeTime = moment('09:00:00', format),
     afterTime = moment('17:00:00', format);
 
     console.log('Start date = ', beforeTime, '; Current = ', time, '; End date = ', afterTime);
