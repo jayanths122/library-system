@@ -10,7 +10,7 @@ module.exports.validTime = function () {
     var startTime = '10:00:00';
     var endTime = '17:00:00';
     
-    currentDate = new Date()   
+    const currentDate = new Date(new Date().toISOString())   
     
     startDate = new Date(currentDate.getTime());
     startDate.setHours(startTime.split(":")[0]);
