@@ -33,7 +33,7 @@ module.exports.validTime = function () {
 
     const format = 'hh:mm:ss'
 
-    const time = moment(),
+    const time = moment(moment(), 'Asia/Kolkata'),
     beforeTime = moment('09:00:00', format),
     afterTime = moment('17:00:00', format);
 
